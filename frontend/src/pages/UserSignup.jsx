@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link,useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import {UserDataContext} from '../context/UserContext'
 
 const UserSignup = () => {
         const [email, setEmail] = useState('')
@@ -7,17 +9,32 @@ const UserSignup = () => {
         const [firstname, setfirstname] = useState('')
         const [lastname, setlastname] = useState('')
         const [userData, setUserData] = useState({})
+
+        const navigate= useNavigate();
+        const {setUser} = React.useContext(UserDataContext)
+
     
-        const submitHandler =(e)=>{
+        const submitHandler = async (e)=>{
             e.preventDefault();
             const newUser = {
-                fullName:{
+                fullname:{
                     firstname:firstname,
                     lastname:lastname,
                 },
                 email: email,
                 password: password
               };
+
+              const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`,newUser)
+
+              if(response.status===201){
+
+                const data = response.data
+                setUser(data.user)
+                localStorage.setItem('token',data.token)
+                
+                navigate('/home')
+              }
             
               setUserData(newUser);
             //   console.log(userData);
@@ -76,9 +93,9 @@ const UserSignup = () => {
             type="password" placeholder='password' />
             <button
             className='bg-[#111] text-white font-semibold mb-3 rounded px-4 py-2 w-full '>
-                Signup</button>
+                Create Account</button>
 
-            <p className='text-center'>Already have a account? <Link to='/' className='text-blue-600'>Login</Link></p>
+            <p className='text-center'>Already have a account? <Link to='/login' className='text-blue-600'>Login</Link></p>
         </form>
         
         </div>
