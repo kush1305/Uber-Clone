@@ -18,7 +18,7 @@ const Home = () => {
   const [confirmRidePanelOpen, setConfirmRidePanelOpen] = useState(false)
   const [lookingForDriverPanelOpen, setLookingForDriverPanelOpen] = useState(false) // this state is named as vehicleFound in the original code, but it seems to be used for looking for a driver
   const [waitingForDriverPanelOpen, setWaitingForDriverPanelOpen] = useState(false) // This state is for the waiting for driver panel
-
+  
   // Refs for the panels
   // These refs will be used to control the animations of the panels
   const panelRef = useRef(null)
@@ -163,6 +163,8 @@ const Home = () => {
       <div ref={waitingForDriverPanelRef} className="fixed w-full bottom-0 px-3 py-5 bg-white z-10">
         <WaitingForDriver setWaitingForDriverPanelOpen={setWaitingForDriverPanelOpen} />
       </div>
+
+      
 
     </div>
   )
