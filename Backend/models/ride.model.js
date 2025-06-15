@@ -54,6 +54,11 @@ const rideSchema = new mongoose.Schema({
     signature:{
         type: String,
         default: null
+    },
+    otp: {
+        type: String,
+        select: false,
+        required: true
     }
 });
 

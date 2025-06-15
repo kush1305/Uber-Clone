@@ -1,6 +1,7 @@
 const rideModel = require('../models/ride.model');
 const { validationResult } = require('express-validator');
 const mapsService = require('../services/maps.service');
+const crypto = require('crypto');
 
 async function getFare(pickup, destination) {
     
@@ -44,6 +45,12 @@ async function getFare(pickup, destination) {
     return price;
 }
 
+module.exports.getFare = getFare;
+
+function getOtp(num){
+    return crypto.randomInt(Math.pow(10, num-1), Math.pow(10, num)).toString();
+}
+
 
 module.exports.createRide = async ({user,pickup,destination,vehicleType}) => {
     if (!user || !pickup || !destination || !vehicleType) {
@@ -58,6 +65,7 @@ module.exports.createRide = async ({user,pickup,destination,vehicleType}) => {
         user: user._id,
         pickup,
         destination,
+        otp: getOtp(4),
         fare: fare[vehicleType]
         
     });

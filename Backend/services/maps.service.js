@@ -61,7 +61,7 @@ module.exports.getAutocompleteSuggestions = async (input) => {
         const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(input)}&key=${apiKey}`;
         const response = await axios.get(url);
         if (response.data.status === 'OK') {
-            return response.data.predictions;
+            return response.data.predictions.map(prediction => prediction.description).filter(value => value);
         } else {
             throw new Error('Failed to fetch autocomplete suggestions');
         }

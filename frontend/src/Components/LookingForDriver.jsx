@@ -1,6 +1,6 @@
 import React from 'react'
 
-const LookingForDriver = ({setLookingForDriverPanelOpen}) => {
+const LookingForDriver = ({setLookingForDriverPanelOpen,pickup,destination,fare,vehicleType}) => {
   return (
         <>
         <h5 onClick={() => 
@@ -19,7 +19,7 @@ const LookingForDriver = ({setLookingForDriverPanelOpen}) => {
                     <i className="ri-map-pin-fill"></i>
                     <div>
                         <h5 className='text-lg font-medium'>562-11/A</h5>
-                        <span className='text-sm -mt-1 text-gray-500'>Sector 17, Chandigarh</span>
+                        <span className='text-sm -mt-1 text-gray-500'>{pickup}</span>
                     </div>
 
                 </div>
@@ -29,7 +29,7 @@ const LookingForDriver = ({setLookingForDriverPanelOpen}) => {
                     <i className="ri-map-pin-fill"></i>
                     <div>
                         <h5 className='text-lg font-medium'>550-10/A</h5>
-                        <span className='text-sm -mt-1 text-gray-500'>Sector 12, Chandigarh</span>
+                        <span className='text-sm -mt-1 text-gray-500'>{destination}</span>
                     </div>
 
                 </div>
@@ -38,7 +38,7 @@ const LookingForDriver = ({setLookingForDriverPanelOpen}) => {
                 <div className='flex items-center gap-5 p-3'>
                     <i className="ri-cash-line"></i>
                     <div>
-                        <h5 className='text-lg font-medium'>Rs.168.50</h5>
+                        <h5 className='text-lg font-medium'>{fare[vehicleType]}</h5>
                         <span className='text-sm -mt-1 text-gray-500'>Cash Cash</span>
                     </div>
 

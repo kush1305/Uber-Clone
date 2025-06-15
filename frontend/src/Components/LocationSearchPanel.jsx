@@ -1,30 +1,30 @@
 import React from 'react'
 
-const LocationSearchPanel = ({ setVehiclePanelOpen,setPanelOpen}) => {
+const LocationSearchPanel = ({ suggestions, setPickup, setDestination, activeField }) => {
 
-  const location = [
-    "24B, 2nd Floor, Block B, Sector 24, Noida, Uttar Pradesh 201301, India",
-    "24B, 2nd Floor, Block B, Sector 24, Noida, Uttar Pradesh 201301, India", 
-    "24B, 2nd Floor, Block B, Sector 24, Noida, Uttar Pradesh 201301, India",
-    "24B, 2nd Floor, Block B, Sector 24, Noida, Uttar Pradesh 201301, India"
-  ];
+    const handleSuggestionClick = (suggestion) => {
+        if (activeField === 'pickup') {
+            setPickup(suggestion)
+        } else if (activeField === 'destination') {
+            setDestination(suggestion)
+        }
+        // setPanelOpen(false)
+        // setVehiclePanelOpen(true)
+    }
 
-  return (
-    <div>
-      {location.map((ele, ind) => (
-        <div 
-          key={ind}
-          onClick={() => {setVehiclePanelOpen(true)
-            setPanelOpen(false)}
-          }
-          className='flex items-center border-2 active:border-black gap-4 justify-start bg-white rounded-lg shadow-lg p-3 border-color-900 cursor-pointer'
-        >
-          <h2><i className="ri-map-pin-fill text-xl"></i></h2>
-          <h4 className='text-sm'>{ele}</h4>
+    return (
+        <div>
+            {/* Display fetched suggestions */}
+            {
+                suggestions.map((elem, idx) => (
+                    <div key={idx} onClick={() => handleSuggestionClick(elem)} className='flex gap-4 border-2 p-3 border-gray-50 active:border-black rounded-xl items-center my-2 justify-start'>
+                        <h2 className='bg-[#eee] h-8 flex items-center justify-center w-12 rounded-full'><i className="ri-map-pin-fill"></i></h2>
+                        <h4 className='font-medium'>{elem}</h4>
+                    </div>
+                ))
+            }
         </div>
-      ))}
-    </div>
-  );
-};
+    )
+}
 
-export default LocationSearchPanel;
+export default LocationSearchPanel
