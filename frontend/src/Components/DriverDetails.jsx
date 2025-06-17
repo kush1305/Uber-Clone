@@ -23,7 +23,7 @@ const DriverDetails = () => {
             alt='Captain Avatar'
           />
           <h4 className='text-lg font-medium capitalize'>
-            {captain.captain.fullname.firstname} {captain.captain.fullname.lastname}
+            {captain.fullname.firstname} {captain.fullname.lastname}
           </h4>
         </div>
         <div>

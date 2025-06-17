@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap'
 import 'remixicon/fonts/remixicon.css'
@@ -8,6 +8,9 @@ import ConfirmRide from '../Components/ConfirmRide';
 import LookingForDriver from '../Components/LookingForDriver';
 import WaitingForDriver from '../Components/WaitingForDriver';
 import axios from 'axios';
+import { SocketContext } from '../context/SocketContext';
+import { UserDataContext } from '../context/UserContext';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 
 const Home = () => {
@@ -21,9 +24,12 @@ const Home = () => {
   const [lookingForDriverPanelOpen, setLookingForDriverPanelOpen] = useState(false) // this state is named as vehicleFound in the original code, but it seems to be used for looking for a driver
   const [waitingForDriverPanelOpen, setWaitingForDriverPanelOpen] = useState(false) // This state is for the waiting for driver panel
 
+
+  const navigate = useNavigate();
   //for Vehicle panel:
   const [fare, setFare] = useState({}) // This state will hold the fare for the ride
   const [vehicleType, setVehicleType] = useState(null) // This state will hold the selected vehicle type
+  const [ride ,setRide] = useState(null);
 
   //Api call to get the pickup suggestions
   const [pickupSuggestions, setPickupSuggestions] = useState([])
@@ -42,6 +48,31 @@ const Home = () => {
   const submitHandler = (e) => {
     e.preventDefault();
   }
+
+  const { socket} = React.useContext(SocketContext);
+  const { user } = React.useContext(UserDataContext);
+
+  useEffect(() => {
+  if (user && user._id) {
+    socket.emit('join', { userType: 'user', userId: user._id });
+  }
+}, [user]);
+
+socket.on('ride-confirmed',ride=>{
+
+  setRide(ride)
+  setWaitingForDriverPanelOpen(true)
+  setVehiclePanelOpen(false)
+})
+
+socket.on('ride-started',ride=>{
+
+  setWaitingForDriverPanelOpen(false)
+  navigate('/riding',{state:{ride}})
+})
+
+
+  // The useGSAP hook is a custom hook that uses GSAP to animate the elements when the dependencies change
 
   // Using GSAP to animate the panels based on the state changes
   // The useGSAP hook is a custom hook that uses GSAP to animate the elements when the dependencies change
@@ -282,12 +313,14 @@ const Home = () => {
         fare={fare}
         pickup={pickup}
         destination={destination}
-        
         vehicleType={vehicleType} />
       </div>
 
       <div ref={waitingForDriverPanelRef} className="fixed w-full bottom-0 px-3 py-5 bg-white z-10">
-        <WaitingForDriver setWaitingForDriverPanelOpen={setWaitingForDriverPanelOpen} />
+        <WaitingForDriver
+         setWaitingForDriverPanelOpen={setWaitingForDriverPanelOpen}
+         ride={ride}
+         setVehiclePanelOpen={setVehiclePanelOpen} />
       </div>
 
 
